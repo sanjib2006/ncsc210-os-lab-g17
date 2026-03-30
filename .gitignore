@@ -1,0 +1,39 @@
+# --- Compiled Binaries & Objects ---
+*.o
+*.d
+*.a
+*.p
+*.img
+*.bin
+*.out
+
+# --- OS Specific Junk ---
+# Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.fuse_hidden
+.directory
+.Trash-*
+
+# --- Editor & IDE Specific ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.clangd/
+.cache/
+
+# --- Documentation ---
+# Ignore temporary LaTeX or LibreOffice lock files
+.~lock.*
+*.log
+*.aux
