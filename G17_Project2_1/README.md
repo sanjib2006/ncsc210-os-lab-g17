@@ -17,4 +17,6 @@ In this project, you have to develop a series of simplified UNIX-like utilities.
 ### Note
 
 1. Implement all the operations from scratch in C, including a main UNIX-like shell program to run the other commands. Write proper makefile and Readme file.  
-2. Attach the screenshot of your execution in the documentation file of this project.  
+2. Attach the screenshot of your execution in the documentation file of this project.
+
+

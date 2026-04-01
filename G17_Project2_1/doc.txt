@@ -1,0 +1,38 @@
+As you can see there is a psh.c file and a Makefile, when you are creating your own <utility_name>, I recommend you to follow these steps.
+(It is not necessary but you can follow it if needed).
+
+
+1. Create you own branch after pulling the repo.
+
+2. Create a new file with name similar with that of you <utility_name>(I advice you to use different names for file and function you are writing to avoid confusion).
+
+3. Write your function inside that new file.
+
+4. Include it in psh.c
+eg., #include"<utility_name>.h"
+
+5. in main function of psh.c :
+    if(!strncmp(command, "<utility_name>", strlen("<utility_name>"))){
+        <utility_name>( args ); //call it.
+    }
+
+6. If your <utility_name> takes arguments make sure you duplicate the entire command and tokenize it. (strdup and strtok). And don't forget to free the memory.
+
+7. If you want to change the shell's appearance feel free to do it. Repo owner will take the decision of whether it is included or not.
+
+8. Now we are getting to the most important part: adding our file to Makefile for proper compilation. First write,
+    <utility_name>.o : <utility_name>.c
+                $(cc) -c <utility_name>.c
+    below psh.o block. 
+
+   Then you can see ' psh : ' at the end of the file, now add <utility_name>.o after a psh.o 
+
+   It must look like this
+
+   psh : psh.o ...(other .o files)  <utility_name>.o
+        $(cc) $(cflags) psh.o ...(other .o files) <utility_name>.o
+
+9. Commit the changes, push it to online repo and send a PR request.
+
+
+
