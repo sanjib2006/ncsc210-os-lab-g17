@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -g
 
 # add more utilites here
-TARGETS = bin/shell 
+TARGETS = bin/shell bin/sh_rm
 
 all: $(TARGETS)
 
