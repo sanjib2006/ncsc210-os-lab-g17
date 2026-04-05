@@ -2,10 +2,10 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-struct stat file_info;
-
 int main(int argc, char *argv[])
 {
+    struct stat file_info;
+
     if (argc != 2)
     {
         printf("Usage: sh_rm <filename>\n");
