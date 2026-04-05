@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include <sys/stat.h>
 
 struct stat file_info;
@@ -35,7 +36,7 @@ int main(int argc, char *argv[])
     else
     {
         printf("File\n");
-        if (unlink(argv[0]) == 0)
+        if (unlink(argv[1]) == 0)
         {
             printf("sh_rm: File %s deleted successfully.\n", argv[1]);
             return 0;
