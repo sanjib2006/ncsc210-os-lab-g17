@@ -37,3 +37,6 @@ $RECYCLE.BIN/
 .~lock.*
 *.log
 *.aux
+
+# --- Project 2 ---
+G17_Project2_1/bin/*
