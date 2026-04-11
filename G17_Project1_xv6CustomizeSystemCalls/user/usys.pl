@@ -42,4 +42,7 @@ entry("getpid");
 entry("sbrk");
 entry("pause");
 entry("uptime");
+entry("sem_init");
+entry("sem_down");
+entry("sem_up");
 entry("getpinfo");
