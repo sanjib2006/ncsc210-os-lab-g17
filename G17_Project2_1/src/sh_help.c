@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     printf("  sh_help    : Displays this help manual.\n");
     printf("  sh_rm <tgt>: Removes a file or an empty directory.\n");
     printf("  sh_rm <tgt>: Removes a file or an empty directory.\n");
-    printf("  sh_cat [file...] : Concatenate and display file contents.\n");
+    printf("  sh_cat  [-n | -b] [file...] : Concatenate and display file contents.\n  -n    number all lines\n  -b    number non-empty lines\n");
 
 
     printf("\n================================================\n");
