@@ -688,3 +688,28 @@ procdump(void)
     printf("\n");
   }
 }
+
+
+uint64 poweroff(void){
+  struct proc* p;
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+    if(p->state != UNUSED && p != initproc){
+      p->killed = 1;
+    }
+    release(&p->lock);
+  }
+
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+    if(p->state == SLEEPING){
+      p->state = RUNNABLE;
+    }
+    release(&p->lock);
+  }
+
+  log_flush();
+
+  *(volatile uint32*)0x100000 = 0x5555;
+  return 0;
+}
