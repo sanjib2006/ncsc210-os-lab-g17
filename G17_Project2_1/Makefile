@@ -3,7 +3,7 @@ CFLAGS = -Wall -g
 
 # add more utilites here
 #
-TARGETS = bin/shell bin/sh_rm bin/sh_help bin/sh_wc bin/sh_cat bin/sh_grep/sh_ls
+TARGETS = bin/shell bin/sh_rm bin/sh_help bin/sh_wc bin/sh_cat bin/sh_grep bin/sh_ls
 
 
 all: $(TARGETS)
