@@ -12,9 +12,9 @@ int main(int argc, char *argv[])
     printf("Custom Utilities:\n");
     printf("  sh_help    : Displays this help manual.\n");
     printf("  sh_rm <tgt>: Removes a file or an empty directory.\n");
-    printf("  sh_rm <tgt>: Removes a file or an empty directory.\n");
     printf("  sh_cat  [-n | -b] [file...] : Concatenate and display file contents.\n  -n    number all lines\n  -b    number non-empty lines\n");
-
+    printf("  sh_grep [-n] [-i] [-v] [-c] <pattern> [file ...]\n");
+    printf("             : Search for pattern in files or stdin.\n");
 
     printf("\n================================================\n");
 

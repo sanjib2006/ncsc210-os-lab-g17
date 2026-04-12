@@ -28,6 +28,7 @@ int uptime(void);
 int sem_init(int, int);
 int sem_down(int);
 int sem_up(int);
+uint64 poweroff(void);
 int getpinfo(struct pinfo*);
 
 // ulib.c
