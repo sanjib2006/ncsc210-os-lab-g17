@@ -7,10 +7,10 @@ In this project, you have to develop a series of simplified UNIX-like utilities.
 - **a. ls** - List directory contents  
 - **b. cat** - Concatenate and display file content  
 - **c. grep** - Search for patterns in files  
-- **d. wc** - Word, line, and character count  
-- **e. cp** - Copy files  
-- **f. mv** - Move or rename files  
-- **g. rm** - Remove files or directories  
+- **d. wc** - Word, line, and character count   
+- **e. rm** - Remove files or directories  
+- **f. head** - Display the first few lines of a file  
+- **g. tail** - Display the last few lines of a file  
 
 ---
 
