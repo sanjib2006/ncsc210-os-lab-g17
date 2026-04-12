@@ -759,6 +759,7 @@ uint64 poweroff(void){
   log_flush();
 
   *(volatile uint32*)0x100000 = 0x5555;
+  return 0;
 }
 
 
