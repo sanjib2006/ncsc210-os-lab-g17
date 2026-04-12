@@ -235,3 +235,13 @@ log_write(struct buf *b)
   release(&log.lock);
 }
 
+
+void log_flush(void){
+  acquire(&log.lock);
+  if(log.lh.n > 0){
+      release(&log.lock);
+      commit();
+  }else{
+    release(&log.lock);
+  }
+}

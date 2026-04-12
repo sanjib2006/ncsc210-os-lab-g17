@@ -25,6 +25,7 @@ int getpid(void);
 char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
+uint64 poweroff(void);
 int getpinfo(struct pinfo*);
 
 // ulib.c
