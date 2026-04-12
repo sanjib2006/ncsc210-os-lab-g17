@@ -53,7 +53,9 @@ usertrap(void)
   
   if(r_scause() == 8){
     // system call
-
+     if(p->force_killed){   //add hua hai  ///////////////////////////////////
+      kexit(-1);
+    }
     if(killed(p))
       kexit(-1);
 
@@ -76,6 +78,9 @@ usertrap(void)
     printf("            sepc=0x%lx stval=0x%lx\n", r_sepc(), r_stval());
     setkilled(p);
   }
+   if(p->force_killed)  //add hua hai ..............................
+    kexit(-1);
+
 
   if(killed(p))
     kexit(-1);
@@ -168,6 +173,7 @@ clockintr()
     acquire(&tickslock);
     ticks++;
     wakeup(&ticks);
+    check_delayed_kill();
     release(&tickslock);
   }
 

@@ -42,9 +42,12 @@ entry("getpid");
 entry("sbrk");
 entry("pause");
 entry("uptime");
-<<<<<<< Updated upstream
-entry("getpinfo");
-=======
 entry("sendmsg");
 entry("recvmsg");
->>>>>>> Stashed changes
+entry("sem_init");
+entry("sem_down");
+entry("sem_up");
+entry("poweroff");
+entry("getpinfo");
+entry("hello");
+entry("sleep");

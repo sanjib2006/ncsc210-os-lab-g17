@@ -145,11 +145,12 @@ UPROGS=\
 	$U/_logstress\
 	$U/_forphan\
 	$U/_dorphan\
-<<<<<<< Updated upstream
 	$U/_ps\
-=======
 	$U/_msgtest\
->>>>>>> Stashed changes
+	$U/_semtest\
+	$U/_hello\
+	$U/_sleep\
+	$U/_dummy\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

@@ -148,6 +148,8 @@ main(void)
   static char buf[100];
   int fd;
 
+  char cwd[128] = "/";   // track current directory
+    chdir("/");
   // Ensure that three file descriptors are open.
   while((fd = open("console", O_RDWR)) >= 0){
     if(fd >= 3){
@@ -157,25 +159,73 @@ main(void)
   }
 
   // Read and run input commands.
-  while(getcmd(buf, sizeof(buf)) >= 0){
+  while(1){
+    // print prompt
+    printf("[%s] ", cwd);
+
+    if(getcmd(buf, sizeof(buf)) < 0)
+      break;
+
     char *cmd = buf;
+
     while (*cmd == ' ' || *cmd == '\t')
       cmd++;
-    if (*cmd == '\n') // is a blank command
+
+    if (*cmd == '\n') // blank command
       continue;
+
     if(cmd[0] == 'c' && cmd[1] == 'd' && cmd[2] == ' '){
-      // Chdir must be called by the parent, not the child.
-      cmd[strlen(cmd)-1] = 0;  // chop \n
-      if(chdir(cmd+3) < 0)
+      cmd[strlen(cmd)-1] = 0;  // remove '\n'
+
+      if(chdir(cmd+3) < 0){
         fprintf(2, "cannot cd %s\n", cmd+3);
+      } else {
+
+        // HANDLE cd ..
+
+        if(strcmp(cmd+3, "..") == 0){
+          char *last = 0;
+
+          for(int i = strlen(cwd)-1; i >= 0; i--){
+            if(cwd[i] == '/'){
+              last = &cwd[i];
+              break;
+            }
+          }
+
+          if(last != 0 && last != cwd)
+            *last = 0;
+          else
+            strcpy(cwd, "/");
+        }
+
+        // HANDLE absolute path
+        else if(cmd[3] == '/'){
+          strcpy(cwd, cmd+3);
+        }
+
+        // HANDLE relative path
+        else{
+          int len = strlen(cwd);
+
+          if(strcmp(cwd, "/") != 0){
+            cwd[len] = '/';
+            cwd[len+1] = '\0';
+          }
+
+          memmove(cwd + strlen(cwd), cmd+3, strlen(cmd+3)+1);
+        }
+      }
     } else {
       if(fork1() == 0)
         runcmd(parsecmd(cmd));
       wait(0);
     }
   }
+
   exit(0);
 }
+
 
 void
 panic(char *s)

@@ -91,10 +91,15 @@ sys_pause(void)
 uint64
 sys_kill(void)
 {
-  int pid;
+  int pid, mode = 0, time = 0;
 
   argint(0, &pid);
-  return kkill(pid);
+  argint(1, &mode);
+
+  if(mode == 2)
+    argint(2, &time);
+
+  return kkill(pid, mode, time);
 }
 
 // return how many clock tick interrupts have occurred
@@ -165,4 +170,98 @@ sys_recvmsg(void)
   p->has_msg = 0;
   return 0;
 >>>>>>> Stashed changes
+}
+
+// Global semaphore array
+struct semaphore semaphores[NSEM];
+
+void
+sem_init_all(void)
+{
+  int i;
+  for(i = 0; i < NSEM; i++) {
+    initlock(&semaphores[i].lock, "sem");
+    semaphores[i].value = 0;
+  }
+}
+
+uint64
+sys_sem_init(void)
+{
+  int id, value;
+  argint(0, &id);
+  argint(1, &value);
+  if(id < 0 || id >= NSEM || value < 0) return -1;
+  acquire(&semaphores[id].lock);
+  semaphores[id].value = value;
+  release(&semaphores[id].lock);
+  return 0;
+}
+
+uint64
+sys_sem_down(void)
+{
+  int id;
+  argint(0, &id);
+  if(id < 0 || id >= NSEM) return -1;
+  acquire(&semaphores[id].lock);
+  while(semaphores[id].value <= 0) {
+    release(&semaphores[id].lock);
+    if(killed(myproc())) return -1;
+    yield();
+    acquire(&semaphores[id].lock);
+  }
+  semaphores[id].value--;
+  release(&semaphores[id].lock);
+  return 0;
+}
+
+uint64
+sys_sem_up(void)
+{
+  int id;
+  argint(0, &id);
+  if(id < 0 || id >= NSEM) return -1;
+  acquire(&semaphores[id].lock);
+  semaphores[id].value++;
+  release(&semaphores[id].lock);
+  return 0;
+}
+
+uint64
+sys_hello(void)
+{
+    char name[100];   // buffer for user string
+
+    // fetch string argument from user space
+    if(argstr(0, name, sizeof(name)) < 0)
+        return -1;
+
+    // print in kernel
+    printf("Hello, %s!\n", name);
+
+    return 0;
+}
+
+uint64
+sys_sleep(void)
+{
+  int n;
+  uint ticks0;
+
+  argint(0, &n);
+
+  acquire(&tickslock);
+  ticks0 = ticks;
+
+  while(ticks - ticks0 < n){
+    if(killed(myproc())){
+      release(&tickslock);
+      return -1;
+    }
+    sleep(&ticks, &tickslock);  
+  }
+
+  release(&tickslock);
+  return 0;
 }

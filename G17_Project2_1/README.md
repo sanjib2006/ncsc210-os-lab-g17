@@ -7,10 +7,59 @@ In this project, you have to develop a series of simplified UNIX-like utilities.
 - **a. ls** - List directory contents  
 - **b. cat** - Concatenate and display file content  
 - **c. grep** - Search for patterns in files  
-- **d. wc** - Word, line, and character count  
-- **e. cp** - Copy files  
-- **f. mv** - Move or rename files  
-- **g. rm** - Remove files or directories  
+- **d. wc** - Word, line, and character count   
+- **e. rm** - Remove files or directories  
+- **f. head** - Display the first few lines of a file  
+- **g. tail** - Display the last few lines of a file  
+
+---
+
+---
+
+### Implemented Utilities
+
+#### `sh_grep` — Search for patterns in files
+
+Searches each named file (or standard input if no files are given) for lines containing the given pattern. Prints each matching line to standard output.
+Implemented using raw POSIX system calls only (`open`, `read`, `write`, `close`); no stdio (`fopen`/`printf`) is used.
+
+**Usage**
+
+```
+sh_grep [-n] [-i] [-v] [-c] <pattern> [file ...]
+```
+
+**Flags**
+
+| Flag | Description |
+|------|-------------|
+| `-n` | Prefix each matching line with its 1-based line number |
+| `-i` | Case-insensitive matching |
+| `-v` | Invert match — print lines that do **not** contain the pattern |
+| `-c` | Print only a count of matching lines (one per file) |
+
+Flags may be combined (e.g., `-ni`, `-iv`).
+
+**Examples**
+
+```bash
+# Basic search
+sh_grep hello file.txt
+
+# Case-insensitive search across two files (filenames prefixed automatically)
+sh_grep -i hello file1.txt file2.txt
+
+# Show line numbers for matching lines
+sh_grep -n TODO src/shell.c
+
+# Count lines that do NOT contain "error"
+sh_grep -vc error log.txt
+
+# Pipe from another command
+echo "hello world" | sh_grep hello
+```
+
+**Exit status:** `0` if at least one match was found, `1` if no matches, `1` on error.
 
 ---
 
