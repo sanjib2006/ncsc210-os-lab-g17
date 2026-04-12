@@ -65,6 +65,7 @@ void            initlog(int, struct superblock*);
 void            log_write(struct buf*);
 void            begin_op(void);
 void            end_op(void);
+void            log_flush(void);
 
 // pipe.c
 int             pipealloc(struct file**, struct file**);
@@ -91,6 +92,7 @@ void            setkilled(struct proc*);
 struct cpu*     mycpu(void);
 struct proc*    myproc();
 void            procinit(void);
+void            sem_init_all(void);
 void            scheduler(void) __attribute__((noreturn));
 void            sched(void);
 void            sleep(void*, struct spinlock*);
@@ -101,6 +103,7 @@ void            yield(void);
 int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
 int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
+uint64          poweroff(void);
 int             kgetpinfo(uint64);
 
 // swtch.S

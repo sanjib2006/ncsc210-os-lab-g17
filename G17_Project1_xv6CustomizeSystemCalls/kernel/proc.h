@@ -1,3 +1,11 @@
+// Semaphore structure
+struct semaphore {
+  struct spinlock lock;
+  int value;
+};
+
+#define NSEM 10
+
 // Saved registers for kernel context switches.
 struct context {
   uint64 ra;
