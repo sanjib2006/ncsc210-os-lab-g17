@@ -4,6 +4,7 @@
 #include "riscv.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "pinfo.h"
 #include "defs.h"
 
 struct cpu cpus[NCPU];
@@ -696,6 +697,21 @@ uint64 poweroff(void){
     acquire(&p->lock);
     if(p->state != UNUSED && p != initproc){
       p->killed = 1;
+int
+kgetpinfo(uint64 addr)
+{
+  struct pinfo pi;
+  struct proc *p;
+  int i = 0;
+
+  for(p = proc; p < &proc[NPROC]; p++) {
+    acquire(&p->lock);
+    if(p->state != UNUSED) {
+      pi.pid[i] = p->pid;
+      pi.state[i] = (int)p->state;
+      pi.sz[i] = p->sz;
+      safestrcpy(pi.name[i], p->name, sizeof(p->name));
+      i++;
     }
     release(&p->lock);
   }
@@ -711,5 +727,9 @@ uint64 poweroff(void){
   log_flush();
 
   *(volatile uint32*)0x100000 = 0x5555;
+  pi.num_procs = i;
+
+  if(copyout(myproc()->pagetable, addr, (char*)&pi, sizeof(pi)) < 0)
+    return -1;
   return 0;
 }
