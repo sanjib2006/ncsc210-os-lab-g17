@@ -22,3 +22,6 @@
 #define SYS_close  21
 #define SYS_poweroff 22
 #define SYS_getpinfo 22
+#define SYS_sem_init  23
+#define SYS_sem_down  24
+#define SYS_sem_up    25

@@ -115,3 +115,59 @@ sys_getpinfo(void)
   argaddr(0, &addr);
   return kgetpinfo(addr);
 }
+
+// Global semaphore array
+struct semaphore semaphores[NSEM];
+
+void
+sem_init_all(void)
+{
+  int i;
+  for(i = 0; i < NSEM; i++) {
+    initlock(&semaphores[i].lock, "sem");
+    semaphores[i].value = 0;
+  }
+}
+
+uint64
+sys_sem_init(void)
+{
+  int id, value;
+  argint(0, &id);
+  argint(1, &value);
+  if(id < 0 || id >= NSEM || value < 0) return -1;
+  acquire(&semaphores[id].lock);
+  semaphores[id].value = value;
+  release(&semaphores[id].lock);
+  return 0;
+}
+
+uint64
+sys_sem_down(void)
+{
+  int id;
+  argint(0, &id);
+  if(id < 0 || id >= NSEM) return -1;
+  acquire(&semaphores[id].lock);
+  while(semaphores[id].value <= 0) {
+    release(&semaphores[id].lock);
+    if(killed(myproc())) return -1;
+    yield();
+    acquire(&semaphores[id].lock);
+  }
+  semaphores[id].value--;
+  release(&semaphores[id].lock);
+  return 0;
+}
+
+uint64
+sys_sem_up(void)
+{
+  int id;
+  argint(0, &id);
+  if(id < 0 || id >= NSEM) return -1;
+  acquire(&semaphores[id].lock);
+  semaphores[id].value++;
+  release(&semaphores[id].lock);
+  return 0;
+}
