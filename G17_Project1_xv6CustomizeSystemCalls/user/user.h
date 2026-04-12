@@ -11,7 +11,7 @@ int pipe(int*);
 int write(int, const void*, int);
 int read(int, void*, int);
 int close(int);
-int kill(int);
+int kill(int,int,int);
 int exec(const char*, char**);
 int open(const char*, int);
 int mknod(const char*, short, short);
@@ -30,6 +30,9 @@ int sem_down(int);
 int sem_up(int);
 uint64 poweroff(void);
 int getpinfo(struct pinfo*);
+int hello(char *);
+int sleep(int);
+
 
 // ulib.c
 int stat(const char*, struct stat*);

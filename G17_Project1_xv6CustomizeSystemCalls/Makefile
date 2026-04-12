@@ -148,6 +148,9 @@ UPROGS=\
 	$U/_poweroff\
 	$U/_ps\
 	$U/_semtest\
+	$U/_hello\
+	$U/_sleep\
+	$U/_dummy\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)

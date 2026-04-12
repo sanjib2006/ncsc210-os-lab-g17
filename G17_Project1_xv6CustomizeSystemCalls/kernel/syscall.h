@@ -25,3 +25,6 @@
 #define SYS_sem_init  23
 #define SYS_sem_down  24
 #define SYS_sem_up    25
+#define SYS_hello  26
+#define SYS_sleep  27
+

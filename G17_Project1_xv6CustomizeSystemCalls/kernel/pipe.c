@@ -132,3 +132,4 @@ piperead(struct pipe *pi, uint64 addr, int n)
   release(&pi->lock);
   return i;
 }
+
