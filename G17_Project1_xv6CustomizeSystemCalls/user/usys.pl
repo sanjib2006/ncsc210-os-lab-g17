@@ -47,3 +47,5 @@ entry("sem_down");
 entry("sem_up");
 entry("poweroff");
 entry("getpinfo");
+entry("hello");
+entry("sleep");

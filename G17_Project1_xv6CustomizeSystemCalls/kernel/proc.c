@@ -20,6 +20,7 @@ extern void forkret(void);
 static void freeproc(struct proc *p);
 
 extern char trampoline[]; // trampoline.S
+extern uint ticks;
 
 // helps ensure that wakeups of wait()ing
 // parents are not lost. helps obey the
@@ -141,6 +142,10 @@ found:
     return 0;
   }
 
+  p->killed = 0;
+  p->force_killed = 0;
+  p->kill_after = 0;
+
   // Set up new context to start executing at forkret,
   // which returns to user space.
   memset(&p->context, 0, sizeof(p->context));
@@ -168,6 +173,8 @@ freeproc(struct proc *p)
   p->name[0] = 0;
   p->chan = 0;
   p->killed = 0;
+  p->force_killed = 0;
+  p->kill_after = 0;
   p->xstate = 0;
   p->state = UNUSED;
 }
@@ -328,6 +335,10 @@ void
 kexit(int status)
 {
   struct proc *p = myproc();
+
+  if(p->killed || p->force_killed){
+    printf("this process id %d got killed successfully\n", p->pid);
+  }
 
   if(p == initproc)
     panic("init exiting");
@@ -591,24 +602,60 @@ wakeup(void *chan)
 // The victim won't exit until it tries to return
 // to user space (see usertrap() in trap.c).
 int
-kkill(int pid)
+kkill(int pid, int mode, int time)
 {
   struct proc *p;
 
   for(p = proc; p < &proc[NPROC]; p++){
     acquire(&p->lock);
+
     if(p->pid == pid){
-      p->killed = 1;
-      if(p->state == SLEEPING){
-        // Wake process from sleep().
-        p->state = RUNNABLE;
+
+      if(mode == 0){
+        // normal kill
+        p->killed = 1;
+        if(p->state == SLEEPING)
+          p->state = RUNNABLE;
       }
+      else if(mode == 1){
+        // immediate kill
+        p->force_killed = 1;
+        if(p->state == SLEEPING)
+          p->state = RUNNABLE;
+      }
+      else if(mode == 2){
+        // delayed kill
+        p->kill_after = ticks + time;
+      }
+
       release(&p->lock);
       return 0;
     }
+
     release(&p->lock);
   }
+
   return -1;
+}
+
+void
+check_delayed_kill(void)
+{
+  struct proc *p;
+
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+
+    if(p->kill_after > 0 && ticks >= p->kill_after){
+      printf("Delayed kill triggering for PID %d at tick %d\n", p->pid, ticks);
+      p->killed = 1;
+      p->kill_after = 0;
+      if(p->state == SLEEPING)
+        p->state = RUNNABLE;
+    }
+
+    release(&p->lock);
+  }
 }
 
 void
@@ -625,7 +672,7 @@ killed(struct proc *p)
   int k;
   
   acquire(&p->lock);
-  k = p->killed;
+  k = p->killed || p->force_killed;
   release(&p->lock);
   return k;
 }
@@ -697,6 +744,26 @@ uint64 poweroff(void){
     acquire(&p->lock);
     if(p->state != UNUSED && p != initproc){
       p->killed = 1;
+    }
+    release(&p->lock);
+  }
+
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+    if(p->state == SLEEPING){
+      p->state = RUNNABLE;
+    }
+    release(&p->lock);
+  }
+
+  log_flush();
+
+  *(volatile uint32*)0x100000 = 0x5555;
+}
+
+
+
+
 int
 kgetpinfo(uint64 addr)
 {
