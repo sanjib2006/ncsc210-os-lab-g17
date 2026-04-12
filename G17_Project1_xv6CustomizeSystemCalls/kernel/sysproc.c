@@ -7,6 +7,8 @@
 #include "proc.h"
 #include "vm.h"
 
+extern struct proc proc[];
+
 uint64
 sys_exit(void)
 {
@@ -108,10 +110,59 @@ sys_uptime(void)
   return xticks;
 }
 
+<<<<<<< Updated upstream
 uint64
 sys_getpinfo(void)
 {
   uint64 addr;
   argaddr(0, &addr);
   return kgetpinfo(addr);
+=======
+// sendmsg(int pid, char *msg)
+// Copies msg from caller's address space into the target process's msg buffer.
+// Returns 0 on success, -1 if pid not found or msg copy fails.
+uint64
+sys_sendmsg(void)
+{
+  int pid;
+  char msg[128];
+  struct proc *p;
+
+  argint(0, &pid);
+  if(argstr(1, msg, sizeof(msg)) < 0)
+    return -1;
+
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+    if(p->pid == pid){
+      safestrcpy(p->msg, msg, sizeof(p->msg));
+      p->has_msg = 1;
+      release(&p->lock);
+      return 0;
+    }
+    release(&p->lock);
+  }
+  return -1;
+}
+
+// recvmsg(char *buf)
+// Copies the waiting message out to the caller's buffer.
+// Returns 0 on success, -1 if no message is waiting or copyout fails.
+uint64
+sys_recvmsg(void)
+{
+  uint64 addr;
+  struct proc *p = myproc();
+
+  argaddr(0, &addr);
+
+  if(p->has_msg == 0)
+    return -1;
+
+  if(copyout(p->pagetable, addr, p->msg, sizeof(p->msg)) < 0)
+    return -1;
+
+  p->has_msg = 0;
+  return 0;
+>>>>>>> Stashed changes
 }

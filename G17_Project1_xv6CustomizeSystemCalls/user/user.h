@@ -25,7 +25,12 @@ int getpid(void);
 char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
+<<<<<<< Updated upstream
 int getpinfo(struct pinfo*);
+=======
+int sendmsg(int, char*);
+int recvmsg(char*);
+>>>>>>> Stashed changes
 
 // ulib.c
 int stat(const char*, struct stat*);

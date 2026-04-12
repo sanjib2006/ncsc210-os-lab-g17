@@ -20,4 +20,9 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
+<<<<<<< Updated upstream
 #define SYS_getpinfo 22
+=======
+#define SYS_sendmsg 22
+#define SYS_recvmsg 23
+>>>>>>> Stashed changes
