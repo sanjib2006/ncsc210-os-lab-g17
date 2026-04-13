@@ -25,6 +25,8 @@ int getpid(void);
 char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
+int sendmsg(int, char*);
+int recvmsg(char*);
 int sem_init(int, int);
 int sem_down(int);
 int sem_up(int);
@@ -32,7 +34,6 @@ uint64 poweroff(void);
 int getpinfo(struct pinfo*);
 int hello(char *);
 int sleep(int);
-
 
 // ulib.c
 int stat(const char*, struct stat*);

@@ -152,6 +152,8 @@ found:
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
 
+  p->has_msg = 0;
+
   return p;
 }
 
