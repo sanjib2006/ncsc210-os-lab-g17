@@ -6,12 +6,11 @@
 #include <stdlib.h>
 
 int line_no = 1;
+int new_line = 1;
 
 void print_file(int fd, int nflag, int bflag){
     char buf[1024];
     int n;
-
-    int new_line = 1;
 
     while ((n = read(fd, buf, sizeof(buf))) > 0) {
         for (int i = 0; i < n; i++) {
