@@ -59,7 +59,7 @@ int main()
             char bin_path[MAX_INPUT_SIZE];
             snprintf(bin_path, sizeof(bin_path), "./bin/%s", args[0]);
             execv(bin_path, args);
-            printf("Error: Command '%s' not found or failed to execute.\n", args[0]);
+            printf("Error: Command '%s' not found or failed to execute.\n", bin_path);
             exit(1);
         }
         else
