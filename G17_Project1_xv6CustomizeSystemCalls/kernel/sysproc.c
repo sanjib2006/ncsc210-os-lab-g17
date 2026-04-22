@@ -171,7 +171,7 @@ sys_recvmsg(void)
 
   p->has_msg = 0;
   return 0;
-
+}
 
 
 // Global semaphore array
