@@ -20,8 +20,6 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
-#define SYS_sendmsg 22
-#define SYS_recvmsg 23
 #define SYS_poweroff 22
 #define SYS_sem_init  23
 #define SYS_sem_down  24
@@ -29,3 +27,5 @@
 #define SYS_hello  26
 #define SYS_sleep  27
 #define SYS_getpinfo 28
+#define SYS_sendmsg 29
+#define SYS_recvmsg 30
