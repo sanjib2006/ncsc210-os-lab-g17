@@ -16,4 +16,3 @@ kernel/kernel
 user/usys.S
 .gdbinit
 TAGS
-user/semtest*
