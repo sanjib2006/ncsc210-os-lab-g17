@@ -102,6 +102,8 @@ extern uint64 sys_link(void);
 extern uint64 sys_mkdir(void);
 extern uint64 sys_close(void);
 extern uint64 sys_getpinfo(void);
+extern uint64 sys_sendmsg(void);
+extern uint64 sys_recvmsg(void);
 extern uint64 sys_sem_init(void);
 extern uint64 sys_sem_down(void);
 extern uint64 sys_sem_up(void);
@@ -132,6 +134,8 @@ static uint64 (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_sendmsg] sys_sendmsg,
+[SYS_recvmsg] sys_recvmsg,
 [SYS_poweroff] poweroff,
 [SYS_getpinfo] sys_getpinfo,
 [SYS_sem_init] sys_sem_init,

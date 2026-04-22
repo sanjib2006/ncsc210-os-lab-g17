@@ -147,6 +147,7 @@ UPROGS=\
 	$U/_dorphan\
 	$U/_poweroff\
 	$U/_ps\
+	$U/_msgtest\
 	$U/_semtest\
 	$U/_hello\
 	$U/_sleep\

@@ -42,6 +42,8 @@ entry("getpid");
 entry("sbrk");
 entry("pause");
 entry("uptime");
+entry("sendmsg");
+entry("recvmsg");
 entry("sem_init");
 entry("sem_down");
 entry("sem_up");

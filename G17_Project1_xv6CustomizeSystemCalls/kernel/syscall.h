@@ -27,3 +27,5 @@
 #define SYS_hello  26
 #define SYS_sleep  27
 #define SYS_getpinfo 28
+#define SYS_sendmsg 29
+#define SYS_recvmsg 30
