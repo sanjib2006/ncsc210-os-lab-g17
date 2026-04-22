@@ -115,14 +115,16 @@ sys_uptime(void)
   return xticks;
 }
 
-<<<<<<< Updated upstream
+
 uint64
 sys_getpinfo(void)
 {
   uint64 addr;
   argaddr(0, &addr);
   return kgetpinfo(addr);
-=======
+}
+
+
 // sendmsg(int pid, char *msg)
 // Copies msg from caller's address space into the target process's msg buffer.
 // Returns 0 on success, -1 if pid not found or msg copy fails.
@@ -169,8 +171,8 @@ sys_recvmsg(void)
 
   p->has_msg = 0;
   return 0;
->>>>>>> Stashed changes
-}
+
+
 
 // Global semaphore array
 struct semaphore semaphores[NSEM];
